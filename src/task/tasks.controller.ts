@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.model';
@@ -16,7 +17,11 @@ import { UpdateTaskDto } from '../dto/update-task.dto';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
   @Get()
-  getAllTasks(): Task[] {
+  getAllTasks(@Query() taskWithCondition: TaskWithCondition): Task[] {
+    const { status, search } = taskWithCondition;
+    if (status || search) {
+      return this.tasksService.getTasksWithCondition(taskWithCondition);
+    }
     return this.tasksService.getAllTask();
   }
   @Post()
