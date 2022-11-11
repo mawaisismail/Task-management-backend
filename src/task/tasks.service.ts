@@ -28,4 +28,8 @@ export class TasksService {
     await this.tasksRepository.save(task);
     return task;
   }
+  async deleteTaskById(id: string) {
+    await this.tasksRepository.delete(id);
+    return `Task with id ${id} has Benn successfully deleted`;
+  }
 }
