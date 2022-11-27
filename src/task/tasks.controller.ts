@@ -5,6 +5,10 @@ import { CreateTaskDto } from '../dto/create-task.dto';
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
+  @Get()
+  getAllTask() {
+    return this.tasksService.getAllTasks();
+  }
   @Get('/:id')
   getTaskById(@Param('id') id: string) {
     return this.tasksService.getTaskById(id);

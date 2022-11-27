@@ -7,9 +7,13 @@ import { TaskStatus } from './task.model';
 @Injectable()
 export class TasksService {
   constructor(
-    @InjectRepository(Task)
-    private tasksRepository: Repository<Task>,
+    @InjectRepository(Task) private tasksRepository: Repository<Task>,
   ) {}
+
+  async getAllTasks(): Promise<Task[]> {
+    return await this.tasksRepository.find();
+  }
+
   async getTaskById(id: string) {
     const task = await this.tasksRepository.findOneBy({ id });
     if (!task) {
