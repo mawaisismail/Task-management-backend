@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TasksModule } from './task/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    UserModule,
     TasksModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
