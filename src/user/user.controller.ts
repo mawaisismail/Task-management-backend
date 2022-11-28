@@ -13,7 +13,7 @@ export class UserController {
     return this.userService.createUser(newUserDto);
   }
   @Post('/signIn')
-  signIn(@Body() credentials: userSignIn): Promise<string> {
+  signIn(@Body() credentials: userSignIn): Promise<{ accessToken: string }> {
     return this.userService.signUp(credentials);
   }
 }

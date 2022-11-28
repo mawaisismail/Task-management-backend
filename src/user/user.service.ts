@@ -9,11 +9,13 @@ import { User } from '../dto/user/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NewUserDto, userSignIn } from '../dto/user/newUser.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
   async getUsers(): Promise<User[]> {
     return await this.userRepository.find();
@@ -37,12 +39,14 @@ export class UserService {
     }
   }
 
-  async signUp(credentials: userSignIn): Promise<string> {
+  async signUp(credentials: userSignIn): Promise<{ accessToken: string }> {
     const { userName, password } = credentials;
     const user: User = await this.userRepository.findOneBy({ userName });
     const isAuth = await bcrypt.compare(password, user.password);
     if (user && isAuth) {
-      return 'Successfully login';
+      const payload = { userName };
+      const accessToken: string = this.jwtService.sign(payload);
+      return { accessToken };
     }
     if (!user) {
       throw new UnauthorizedException('Error:Username / Password not match');
