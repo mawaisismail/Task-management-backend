@@ -15,8 +15,8 @@ export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
-  getUsers() {
-    return [{ name: 'Await', age: 1 }];
+  async getUsers(): Promise<User[]> {
+    return await this.userRepository.find();
   }
   async createUser(newUserDto: NewUserDto): Promise<void> {
     const { userName, password } = newUserDto;
